@@ -1,4 +1,4 @@
--- 1번
++-- 1번
 select first_name || ' ' || last_name as "이름", salary as "월급", phone_number as "전화번호" 
 from employees order by hire_date asc; -- 디폴트가 asc
 
