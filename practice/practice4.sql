@@ -46,3 +46,13 @@ from employees a, (select department_id,
 						 group by department_id)b
 where nvl(a.department_id, 0) = nvl(b.department_id, 0)
 and a.salary >= b.avg_s;
+
+-- 4-2 강사님버전
+select a.employee_id, a.last_name, a.salary,
+a.department_id
+from employees a, (select nvl(department_id, 0) as depart_id,
+								  avg(salary) as avg_s
+						 from employees
+						 group by department_id)b
+where nvl(a.department_id, 0) = b.depart_id
+and a.salary >= b.avg_s;
