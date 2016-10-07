@@ -38,5 +38,10 @@ COMMIT;
 -- rollback
 rollback;
 
+-- subquery create table
+create table book_temp as(select * from book);
+
+-- drop
+drop table book_temp;
 
 SELECT * FROM book;
