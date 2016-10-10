@@ -45,22 +45,29 @@ GROUP BY d.department_name
                                  GROUP BY department_id));
 
 -- 5번 문제
+select r.REGION_NAME, avg(e.salary) avgs
+from EMPLOYEES e, DEPARTMENTS d, LOCATIONS l, COUNTRIES c, REGIONS r
+where e.DEPARTMENT_ID = d.DEPARTMENT_ID
+and d.LOCATION_ID = l.LOCATION_ID
+and l.COUNTRY_ID = c.COUNTRY_ID
+and c.REGION_ID = r.REGION_ID
+group by r.region_name
+having avg(salary) = (select max(avgs)
+								from (select avg(e.salary) avgs
+										from EMPLOYEES e, DEPARTMENTS d, LOCATIONS l, COUNTRIES c, REGIONS r
+										where e.DEPARTMENT_ID = d.DEPARTMENT_ID
+										and d.LOCATION_ID = l.LOCATION_ID
+										and l.COUNTRY_ID = c.COUNTRY_ID
+										and c.REGION_ID = r.REGION_ID
+									group by r.region_name));
 
-  SELECT r.region_NAME, AVG (salary)
-    FROM employees e, DEPARTMENTS d, LOCATIONS l, COUNTRIES c, REGIONS r
-   WHERE e.DEPARTMENT_ID = d.DEPARTMENT_ID
-   and d.LOCATION_ID = l.LOCATION_ID
-   and l.COUNTRY_ID = c.COUNTRY_ID
-   and c.REGION_ID = r.REGION_ID
-GROUP BY r.region_id
-  HAVING AVG (salary) = (SELECT MAX (avgs)
-                           			FROM (  SELECT department_id, AVG (salary) avgs
-                                    			 FROM employees
-                                 			GROUP BY department_id));
-
-
-SELECT * FROM employees;
-SELECT * FROM departments;
-SELECT * FROM LOCATIONS l;
-SELECT * FROM COUNTRIES c;
-select * from regions;
+-- 6번 문제
+select j.job_title, avg(salary)
+from employees e, jobs j
+where e.job_id = j.job_id
+group by j.job_title
+having avg(salary) = (select max(avgs)
+							from (select avg(salary) avgs
+							from EMPLOYEES e, JOBS j
+							where j.JOB_ID = e.JOB_ID
+							group by e.JOB_ID));
